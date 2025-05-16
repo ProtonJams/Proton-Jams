@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Courses-Proton Jams</title>
+    <link rel="shortcut icon" href="header2.jpg" type="image/x-icon">
+    <style>
+    
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('https://source.unsplash.com/1600x900/?technology,music') no-repeat fixed center;
+            background-size: cover;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            perspective: 1000px;
+            overflow-x: hidden;
+        }
+
+        header {
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out forwards;
+        }
+
+        h1 {
+            font-size: 35px;
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.6);
+        }
+
+        .courses-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            justify-content: center;
+            max-width: 900px;
+            padding: 20px;
+        }
+
+        .course {
+            width: 250px;
+            height: 150px;
+            transition: all 0.6s ease-in-out;
+            background: linear-gradient(to right, #ffffff, #cfd9df);
+            color: #333;
+            border-radius: 12px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            animation: slideUp 1s ease-in-out forwards;
+        }
+
+        .course:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 15px 30px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media screen and (max-width: 768px) {
+            .courses-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Our Courses</h1>
+    </header>
+
+    <main class="courses-container">
+        <div class="course" onclick="enrollCourse('DJing')"><h2>DJing</h2></div>
+        <div class="course" onclick="enrollCourse('Songwriting')"><h2>Songwriting</h2></div>
+        <div class="course" onclick="enrollCourse('Music Production')"><h2>Music Production</h2></div>
+        <div class="course" onclick="enrollCourse('Event Management')"><h2>Event Management</h2></div>
+        <div class="course" onclick="enrollCourse('Equipment Hire')"><h2>Equipment Hire</h2></div>
+        <div class="course" onclick="enrollCourse('Sound Engineering')"><h2>Sound Engineering</h2></div>
+    </main>
+
+    <script>
+        function enrollCourse(courseName) {
+            alert(`Successfully enrolled in ${courseName}!`);
+        }
+    </script>
+
+</body>
+</html>

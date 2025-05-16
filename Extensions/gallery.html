@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery with Autoplay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .gallery-item img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Caption Styling */
+        .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 5px;
+            font-size: 12px;
+            text-align: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .gallery-item:hover .caption {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Lightbox Styling */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .prev, .next, .playPause {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+        }
+
+        .prev { left: 10px; }
+        .next { right: 10px; }
+        .playPause {
+            bottom: 20px;
+            top: auto;
+            font-size: 20px;
+            padding: 8px 12px;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+
+            .caption {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gallery-container">
+        <div class="gallery-item">
+            <img src="1.jpg" alt="1" onclick="openLightbox(0)">
+            <div class="caption">Our Services</div>
+        </div>
+        <div class="gallery-item">
+            <img src="2.jpg" alt="2" onclick="openLightbox(1)">
+            <div class="caption">Bookings</div>
+        </div>
+        <div class="gallery-item">
+            <img src="3.jpg" alt="3" onclick="openLightbox(2)">
+            <div class="caption">Serene Beach</div>
+        </div>
+        <div class="gallery-item">
+            <img src="4.jpg" alt="4" onclick="openLightbox(3)">
+            <div class="caption">City Lights</div>
+        </div>
+        <div class="gallery-item">
+            <img src="5.jpg" alt="5" onclick="openLightbox(4)">
+            <div class="caption">Lush Forest</div>
+        </div>
+        <div class="gallery-item">
+            <img src="6.jpg" alt="6" onclick="openLightbox(5)">
+            <div class="caption">Snowy Peaks</div>
+        </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <span class="prev" onclick="prevImage()">&#10094;</span>
+        <img id="lightbox-img" src="" alt="Enlarged Image">
+        <span class="next" onclick="nextImage()">&#10095;</span>
+        <span class="playPause" onclick="toggleSlideshow()">▶</span>
+        <p id="lightbox-caption" style="color:white; text-align:center; margin-top:10px;"></p>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        let slideshowInterval;
+        let isPlaying = false;
+        const images = [
+            { src: "1.jpg", caption: "Our Services" },
+            { src: "2.jpg", caption: "Bookings" },
+            { src: "3.jpg", caption: "Serene Beach" },
+            { src: "4.jpg", caption: "City Lights" },
+            { src: "5.jpg", caption: "Lush Forest" },
+            { src: "6.jpg", caption: "Snowy Peaks" }
+        ];
+
+        function openLightbox(index) {
+            currentIndex = index;
+            document.getElementById("lightbox").style.display = "flex";
+            updateLightbox();
+        }
+
+        function closeLightbox() {
+            document.getElementById("lightbox").style.display = "none";
+            stopSlideshow();
+        }
+
+        function updateLightbox() {
+            document.getElementById("lightbox-img").src = images[currentIndex].src;
+            document.getElementById("lightbox-caption").innerText = images[currentIndex].caption;
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+            updateLightbox();
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+            updateLightbox();
+        }
+
+        function toggleSlideshow() {
+            if (isPlaying) {
+                stopSlideshow();
+            } else {
+                startSlideshow();
+            }
+        }
+
+        function startSlideshow() {
+            isPlaying = true;
+            document.querySelector(".playPause").innerText = "⏸";
+            slideshowInterval = setInterval(nextImage, 3000);
+        }
+
+        function stopSlideshow() {
+            isPlaying = false;
+            document.querySelector(".playPause").innerText = "▶";
+            clearInterval(slideshowInterval);
+        }
+    </script>
+
+</body>
+</html>

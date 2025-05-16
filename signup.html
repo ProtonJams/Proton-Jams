@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #a3b0be, #5c757a);
+            margin: 0;
+        }
+
+        .container {
+            width: 350px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .input-group {
+            position: relative;
+            margin: 15px 0;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: transparent;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            color: #777;
+            transition: 0.3s;
+            pointer-events: none;
+        }
+
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label {
+            top: -10px;
+            font-size: 12px;
+            color: #007BFF;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5);
+        }
+
+        .password-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toggle-password {
+            cursor: pointer;
+            font-size: 16px;
+            padding: 8px;
+            background: none;
+            border: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+            animation: bounce 0.3s ease-in-out;
+        }
+
+        .loading {
+            display: none;
+            font-size: 12px;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form id="signupForm">
+            <div class="input-group">
+                <input type="text" id="username" placeholder=" " required>
+                <label for="username">Username</label>
+            </div>
+
+            <div class="input-group">
+                <input type="email" id="email" placeholder=" " required>
+                <label for="email">Email</label>
+            </div>
+
+            <div class="input-group">
+                <div class="password-container">
+                    <input type="password" id="password" placeholder=" " required>
+                    <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+                </div>
+                <label for="password">Password</label>
+            </div>
+
+            <p class="strength" id="passwordStrength"></p>
+
+            <button type="submit">Sign Up</button>
+            <p class="loading" id="loadingText">Processing...</p>
+        </form>
+        <p id="successMessage" style="color: green; display: none;">Sign-up successful!</p>
+    </div>
+
+    <script>
+        function togglePassword() {
+            let passwordField = document.getElementById("password");
+            passwordField.type = passwordField.type === "password" ? "text" : "password";
+        }
+
+        document.getElementById("password").addEventListener("input", function() {
+            let password = this.value;
+            let strengthMessage = document.getElementById("passwordStrength");
+            if (password.length < 6) {
+                strengthMessage.textContent = "Weak: Must be at least 6 characters.";
+                strengthMessage.style.color = "red";
+            } else if (password.match(/[A-Z]/) && password.match(/[0-9]/)) {
+                strengthMessage.textContent = "Strong: Good password!";
+                strengthMessage.style.color = "green";
+            } else {
+                strengthMessage.textContent = "Medium: Try adding numbers & uppercase letters.";
+                strengthMessage.style.color = "orange";
+            }
+        });
+
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let loadingText = document.getElementById("loadingText");
+            let button = document.querySelector("button");
+
+            loadingText.style.display = "block";
+            button.style.opacity = "0.7";
+            button.disabled = true;
+
+            setTimeout(() => {
+                loadingText.style.display = "none";
+                button.style.opacity = "1";
+                button.disabled = false;
+                document.getElementById("successMessage").style.display = "block";
+            }, 2000);
+        });
+    </script>
+
+</body>
+</html>
