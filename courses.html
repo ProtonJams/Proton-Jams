@@ -108,6 +108,62 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        /* ✨ Enhanced Footer Styling */
+        .footer {
+            background: linear-gradient(to right, #282828, #1a1a1a);
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            font-size: 16px;
+        }
+
+        .footer__container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .footer__about,
+        .footer__links,
+        .footer__contact,
+        .footer__socials {
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .footer__about:hover,
+        .footer__links:hover,
+        .footer__contact:hover,
+        .footer__socials:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 8px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .footer__links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer__links ul li a {
+            text-decoration: none;
+            color: #ddd;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .footer__links ul li a:hover {
+            color: #ffcc00;
+        }
+
+        .footer__bottom {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -140,6 +196,12 @@
         <p id="successMessage" style="display:none;">Enrollment Successful!</p>
     </div>
 
+    <footer class="footer">
+        <div class="footer__bottom">
+            <p>&copy; 2017 Proton Jams Productions. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script>
         function getGreeting() {
             let hour = new Date().getHours();
@@ -165,6 +227,7 @@
             let name = document.getElementById("name").value.trim();
             let email = document.getElementById("email").value.trim();
             let phone = document.getElementById("phone").value.trim();
+
             if (!name || !email || !phone) {
                 alert("All fields are required!");
                 return;

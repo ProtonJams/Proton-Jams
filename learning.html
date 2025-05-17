@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Proton Jams Productions</title>
+    <link rel="shortcut icon" href="header2.jpg" type="image/x-icon">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1em 2em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 1em;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5em 1em;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 2em auto;
+            padding: 2em;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5em;
+            margin-bottom: 2em;
+        }
+
+        .module-card {
+            background-color: #f9f9f9;
+            padding: 1.5em;
+            border-radius: 5px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #007bff;
+        }
+
+        .module-card h3 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            color: #333;
+        }
+
+        .module-card p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .module-card a {
+            display: inline-block;
+            margin-top: 1em;
+            padding: 0.5em 1em;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .module-card a:hover {
+            background-color: #0056b3;
+        }
+
+        .course-details {
+            margin-top: 2em;
+            padding: 1.5em;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .lesson-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .lesson-list ul li {
+            padding: 0.8em 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .lesson-list ul li:last-child {
+            border-bottom: none;
+        }
+
+        .lesson-list ul li a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .lesson-list ul li a:hover {
+            color: #007bff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1em;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Specific page styles */
+        .course-page h2 {
+            color: #333;
+            margin-bottom: 1em;
+        }
+
+        .course-content {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .assignment {
+            background-color: #e9ecef;
+            padding: 1em;
+            border-radius: 5px;
+            margin-bottom: 1em;
+        }
+
+        .assignment h4 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .assignment p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .assignment a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .assignment a:hover {
+            text-decoration: underline;
+        }
+
+        .profile-page h2 {
+            color: #333;
+            margin-bottom: 1em;
+        }
+
+        .profile-info p {
+            margin-bottom: 0.8em;
+        }
+
+        .profile-info strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .enrollment-form h2 {
+            color: #333;
+            margin-bottom: 1em;
+        }
+
+        .enrollment-form form {
+            display: grid;
+            gap: 1em;
+        }
+
+        .enrollment-form label {
+            display: block;
+            margin-bottom: 0.3em;
+            font-weight: bold;
+        }
+
+        .enrollment-form input[type="text"],
+        .enrollment-form input[type="email"],
+        .enrollment-form select {
+            width: 100%;
+            padding: 0.7em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .enrollment-form button {
+            padding: 0.8em 1.5em;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .enrollment-form button:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Proton Jams Productions</h1>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="enroll.html">Enroll</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="dashboard" class="dashboard">
+            <h2>Dashboard</h2>
+            <div class="module-card">
+                <h3>Introduction to Guitar</h3>
+                <p>Learn the basic chords and strumming patterns on the guitar.</p>
+                <a href="Guitarintro.html">Go to Course</a>
+            </div>
+            <div class="module-card">
+                <h3>Piano Fundamentals</h3>
+                <p>An introductory course to playing the piano and understanding music theory.</p>
+                <a href="course.html?id=piano-basics">Go to Course</a>
+            </div>
+            <div class="module-card">
+                <h3>Music Theory for Beginners</h3>
+                <p>Explore the essential concepts of music theory and notation.</p>
+                <a href="course.html?id=music-theory">Go to Course</a>
+            </div>
+        </section>
+
+        <section id="courses" style="display: none;">
+            <h2>Available Music Courses</h2>
+            <div class="module-card">
+                <h3>Advanced Guitar Techniques</h3>
+                <p>Dive deeper into fingerpicking, lead guitar, and music styles.</p>
+                <a href="Guitarintro.html">View Course</a>
+            </div>
+            <div class="module-card">
+                <h3>Songwriting Workshop</h3>
+                <p>Learn the art of writing compelling lyrics and melodies.</p>
+                <a href="course.html?id=songwriting">View Course</a>
+            </div>
+            <div class="module-card">
+                <h3>All Genre Music Production</h3>
+                <p>Get started with producing electronic music using digital audio workstations.</p>
+                <a href="course.html?id=electronic-music">View Course</a>
+            </div>
+            </section>
+
+        <section id="course-details" style="display: none;" class="course-page">
+            <h2>Course Title (Dynamically Loaded)</h2>
+            <div class="course-content">
+                <p>This is where the course description will go. Learn to play your favorite instrument or explore the world of music production. Our courses are designed for all skill levels.</p>
+                <div class="lesson-list">
+                    <h3>Lessons</h3>
+                    <ul>
+                        <li><a href="lesson.html?course=456&lesson=1">Introduction to Your Instrument</a></li>
+                        <li><a href="lesson.html?course=456&lesson=2">Basic Techniques and Posture</a></li>
+                        <li><a href="lesson.html?course=456&lesson=3">Playing Your First Piece</a></li>
+                        </ul>
+                </div>
+                <div class="assignment">
+                    <h4>Assignment 1: First Performance</h4>
+                    <p>Record yourself playing the first piece you learned and submit it by [Date]. <a href="#">View Assignment</a></p>
+                </div>
+                </div>
+        </section>
+
+        <section id="profile" style="display: none;" class="profile-page">
+            <h2>My Profile</h2>
+            <div class="profile-info">
+                <p><strong>Name:</strong> Tucker Tuckish</p>
+                <p><strong>Email:</strong> protonjams@gmail.com</p>
+                <p><strong>Enrolled Courses:</strong> Introduction to Guitar, Music Theory for Beginners</p>
+                <p><strong>Progress:</strong> 60%</p>
+                <a href="#">Edit Profile</a>
+            </div>
+        </section>
+
+        <section id="enroll" style="display: none;" class="enrollment-form">
+            <h2>Enroll in a Music Course</h2>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="course">Select Course:</label>
+                <select id="course" name="course">
+                    <option value="guitar-intro">Introduction to Guitar</option>
+                    <option value="piano-basics">Piano Fundamentals</option>
+                    <option value="music-theory">Music Theory for Beginners</option>
+                    <option value="advanced-guitar">Advanced Guitar Techniques</option>
+                    <option value="songwriting">Songwriting Workshop</option>
+                    <option value="electronic-music">Electronic Music Production</option>
+                </select>
+
+                <button type="submit">Enroll Now</button>
+            </form>
+        </section>
+    </div>
+
+     <footer class="footer">
+        <div class="footer__container">
+            <div class="footer__about">
+                <h3>About Us</h3>
+                <p>Proton Jams empowers music creators, performers, and industry pros with expert-led courses in DJing, songwriting, production, event management, and more.</p>
+            </div>
+            <div class="footer__links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="Clothing.html">Clothing</a></li>
+                </ul>
+            </div>
+            <div class="footer__contact">
+                <h3>Contact</h3>
+                <p>Call Us: <a href="tel:+27677189682">+27 67 718 9682</a></p>
+                <p>Email: <a href="mailto:protonjams@gmail.com">protonjams@gmail.com</a></p>
+                <p>Address: Cape Town, South Africa</p>
+            </div>
+            <div class="footer__socials">
+                <h3>Follow Us</h3>
+                <ul class="social-icons">
+                    <li><a href="https://x.com/protonjams/status/1204416703024680960"><i class="ri-twitter-line"></i> Proton Jams</a></li>
+                    <li><a href="https://www.facebook.com/GoodtimesJams/"><i class="ri-facebook-line"></i> Proton Jams</a></li>
+                    <li><a href="https://www.tiktok.com/@protonjamz?_t=ZM-8vo4UdA70vl&_r=1"><i class="ri-tiktok-line"></i> Proton Jams</a></li>
+                    <li><a href="https://www.instagram.com/reel/C4BLN8tC5cR/?utm_source=ig_web_copy_link"><i class="ri-instagram-line"></i> Proton Jams</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2017 Proton Jams Productions. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        // Basic front-end navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('nav a');
+            const sections = document.querySelectorAll('.container > section');
+
+            function showSection(id) {
+                sections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                const targetSection = document.getElementById(id);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                }
+            }
+
+            // Initial load - show dashboard
+            showSection('dashboard');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const href = this.getAttribute('href');
+                    const sectionId = href.split('.')[0];
+                    showSection(sectionId);
+
+                    // For "Go to Course" links on the dashboard
+                    if (href.startsWith('course.html')) {
+                        const courseId = new URLSearchParams(href.split('?')[1]).get('id');
+                        const courseDetailsSection = document.getElementById('course-details');
+                        if (courseDetailsSection) {
+                            const h2 = courseDetailsSection.querySelector('h2');
+                            if (h2 && courseId) {
+                                h2.textContent = courseId.replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                            }
+                            showSection('course-details');
+                        }
+                    }
+                });
+            });
+
+            // Handle initial load based on URL hash
+            if (window.location.hash) {
+                const hashId = window.location.hash.substring(1);
+                showSection(hashId);
+            }
+        });
+    </script>
+</body>
+</html>
