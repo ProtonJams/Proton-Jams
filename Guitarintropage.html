@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Course - Level Up Your Playing!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 40px;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h2, h3 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            margin: 8px;
+        }
+
+        button:hover {
+            background-color: #1e7e34;
+        }
+
+        .badge {
+            font-size: 1.2em;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .gold { background: gold; color: #333; }
+        .silver { background: silver; color: #333; }
+        .bronze { background: #cd7f32; color: white; }
+
+        #leaderboardList {
+            list-style: none;
+            padding: 0;
+        }
+
+        #leaderboardList li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #leaderboardList li:last-child {
+            border-bottom: none;
+        }
+
+        #leaderboardList li .rank {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #007bff;
+        }
+
+        #leaderboardList li .name {
+            flex-grow: 1;
+            text-align: left;
+            color: #333;
+        }
+
+        #leaderboardList li .score {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        /* Video Styles */
+        #video {
+            width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Musical Enhancements */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .musical-note {
+            display: inline-block;
+            font-size: 1.5em;
+            margin: 0 5px;
+            color: #ffc107; /* Goldish color */
+            animation: pulse 1s infinite alternate;
+        }
+
+        .quiz-active {
+            background-color: #e9ecef;
+            border: 1px solid #d1d3e2;
+        }
+
+        .correct-answer {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .wrong-answer {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .challenge-submitted {
+            background-color: #fff3cd;
+            color: #85640a;
+            border: 1px solid #ffeeba;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container quiz-active">
+        <h3><i class="fas fa-guitar musical-note"></i> Guitar Quiz <i class="fas fa-music musical-note"></i></h3>
+        <p id="question">Which chord uses only the 2nd and 3rd frets?</p>
+        <div id="answerButtons">
+            <button onclick="checkAnswer('A', 'C Major')">A) C Major</button>
+            <button onclick="checkAnswer('B', 'D Major')">B) D Major</button>
+            <button onclick="checkAnswer('C', 'A Minor')">C) A Minor</button>
+            <button onclick="checkAnswer('D', 'E Minor')">D) E Minor</button>
+        </div>
+        <p id="quizResult"></p>
+        <button onclick="showScore()"><i class="fas fa-check-double"></i> Show Final Score</button>
+        <p id="finalScore"></p>
+    </div>
+
+    <h2><i class="fas fa-trophy musical-note"></i> Leaderboard <i class="fas fa-crown musical-note"></i></h2>
+    <div class="container">
+        <ul id="leaderboardList"></ul>
+    </div>
+
+    <div class="container">
+        <h3><i class="fas fa-tasks musical-note"></i> Weekly Challenge <i class="fas fa-guitar musical-note"></i></h3>
+        <p id="challengeText">Play a clean transition between C, G, and D Major.</p>
+        <button onclick="completeChallenge()"><i class="fas fa-upload"></i> Submit Completion</button>
+        <p id="challengeBadge"></p>
+    </div>
+
+    <div class="container">
+        <h3><i class="fas fa-video musical-note"></i> Record Your Guitar Performance <i class="fas fa-microphone musical-note"></i></h3>
+        <video id="video" autoplay muted></video>
+        <div>
+            <button id="startRecord"><i class="fas fa-record-vinyl"></i> Start Recording</button>
+            <button id="stopRecord" disabled><i class="fas fa-stop-circle"></i> Stop Recording</button>
+        </div>
+        <button onclick="uploadVideo()" disabled><i class="fas fa-cloud-upload-alt"></i> Submit Video</button>
+        <p id="videoStatus"></p>
+    </div>
+
+    <script>
+        // Quiz Data
+        const quizQuestions = [
+            {
+                question: "Which chord uses only the 2nd and 3rd frets?",
+                options: ["C Major", "D Major", "A Minor", "E Minor"],
+                correctAnswer: "D Major"
+            },
+            // Add more quiz questions here!
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const questionElement = document.getElementById("question");
+        const answerButtonsElement = document.getElementById("answerButtons");
+        const quizResultElement = document.getElementById("quizResult");
+        const finalScoreElement = document.getElementById("finalScore");
+
+        function loadQuestion() {
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+            answerButtonsElement.innerHTML = ""; // Clear previous buttons
+
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option);
+                answerButtonsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            const resultText = selectedAnswer === currentQuestion.correctAnswer ? "Correct! <i class='fas fa-check musical-note'></i>" : Incorrect. The correct answer was ${currentQuestion.correctAnswer} <i class='fas fa-times musical-note'></i>;
+            quizResultElement.innerHTML = resultText;
+
+            const buttons = answerButtonsElement.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.disabled = true;
+                if (button.textContent === currentQuestion.correctAnswer) {
+                    button.classList.add('correct-answer');
+                } else if (button.textContent === selectedAnswer && selectedAnswer !== currentQuestion.correctAnswer) {
+                    button.classList.add('wrong-answer');
+                }
+            });
+
+            if (selectedAnswer === currentQuestion.correctAnswer) {
+                score++;
+            }
+
+            // Move to the next question after a short delay
+            setTimeout(() => {
+                currentQuestionIndex++;
+                quizResultElement.textContent = ""; // Clear result
+                if (currentQuestionIndex < quizQuestions.length) {
+                    loadQuestion();
+                    buttons.forEach(button => {
+                        button.disabled = false;
+                        button.classList.remove('correct-answer', 'wrong-answer');
+                    });
+                } else {
+                    showScore();
+                }
+            }, 1500);
+        }
+
+        function showScore() {
+            questionElement.textContent = "Quiz Completed!";
+            answerButtonsElement.innerHTML = "";
+            finalScoreElement.innerHTML = Final Score: ${score}/${quizQuestions.length} <i class="fas fa-star musical-note"></i>;
+            updateLeaderboard(localStorage.getItem("currentUser") || "Guest", score);
+        }
+
+        // Leaderboard
+        function updateLeaderboard(player, score) {
+            let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+            const existingPlayerIndex = leaderboard.findIndex(p => p.name === player);
+
+            if (existingPlayerIndex !== -1) {
+                leaderboard[existingPlayerIndex].score = Math.max(leaderboard[existingPlayerIndex].score, score);
+            } else {
+                leaderboard.push({ name: player, score });
+            }
+
+            leaderboard.sort((a, b) => b.score - a.score);
+            localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+            displayLeaderboard();
+        }
+
+        function displayLeaderboard() {
+            const leaderboardList = document.getElementById("leaderboardList");
+            leaderboardList.innerHTML = "";
+            const leaderboardData = JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+            leaderboardData.forEach((player, index) => {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = <span class="rank">${index + 1}.</span> <span class="name">${player.name}</span> <span class="score">${player.score} pts</span>;
+                leaderboardList.appendChild(listItem);
+            });
+        }
+
+        displayLeaderboard(); // Load leaderboard on page load
+        loadQuestion(); // Start the quiz
+
+        // Weekly Challenge Badge System
+        const challengeTextElement = document.getElementById("challengeText");
+        const challengeBadgeElement = document.getElementById("challengeBadge");
+
+        function completeChallenge() {
+            challengeBadgeElement.classList.add('challenge-submitted');
+            challengeBadgeElement.innerHTML = '<i class="fas fa-spinner fa-spin musical-note"></i> Submitting...';
+            setTimeout(() => {
+                let challengeScore = Math.floor(Math.random() * 100);
+                let badgeHTML = '';
+                if (challengeScore > 85) {
+                    badgeHTML = '<span class="badge gold"><i class="fas fa-award"></i> Gold Badge 🥇</span>';
+                } else if (challengeScore > 70) {
+                    badgeHTML = '<span class="badge silver"><i class="fas fa-award"></i> Silver Badge 🥈</span>';
+                } else {
+                    badgeHTML = '<span class="badge bronze"><i class="fas fa-award"></i> Bronze Badge 🥉</span>';
+                }
+
+                localStorage.setItem("challengeCompleted", badgeHTML);
+                challengeBadgeElement.innerHTML = badgeHTML;
+                challengeBadgeElement.classList.remove('challenge-submitted');
+                alert("Challenge Submitted! Badge awarded.");
+            }, 2000);
+        }
+
+        // Video Submission
+        let mediaRecorder;
+        let recordedChunks = [];
+        const videoElement = document.getElementById("video");
+        const startRecordButton = document.getElementById("startRecord");
+        const stopRecordButton = document.getElementById("stopRecord");
+        const uploadVideoButton = document.getElementById("uploadVideo");
+        const videoStatusElement = document.getElementById("videoStatus");
+
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                videoElement.srcObject = stream;
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: "video/webm" });
+                    localStorage.setItem("submittedVideo", URL.createObjectURL(blob));
+                    videoStatusElement.textContent = "Video recorded!";
+                    uploadVideoButton.disabled = false;
+                    startRecordButton.disabled = false;
+                    stopRecordButton.disabled = true;
+                };
+
+                startRecordButton.onclick = () => {
+                    recordedChunks = [];
+                    mediaRecorder.start();
+                    startRecordButton.disabled = true;
+                    stopRecordButton.disabled = false;
+                    uploadVideoButton.disabled = true;
+                    videoStatusElement.textContent = "Recording...";
+                };
+
+                stopRecordButton.onclick = () => {
+                    if (mediaRecorder && mediaRecorder.state === "recording") {
+                        mediaRecorder.stop();
+                        videoStatusElement.textContent = "Stopping recording...";
+                    }
+                };
+            })
+            .catch(error => {
+                console.error("Error accessing media devices:", error);
+                videoStatusElement.textContent = "Camera/Microphone access denied.";
+                startRecordButton.disabled = true;
+                stopRecordButton.disabled = true;
+                uploadVideoButton.disabled = true;
+            });
+
+        function uploadVideo() {
+            if (localStorage.getItem("submittedVideo")) {
+                videoStatusElement.textContent = "Uploading video... <i class='fas fa-spinner fa-spin musical-note'></i>";
+                setTimeout(() => {
+                    alert("Video submitted successfully! (Simulated)");
+                    videoStatusElement.textContent = "Video submitted!";
+                    localStorage.removeItem("submittedVideo"); // Clear local storage after submission (simulated)
+                    uploadVideoButton.disabled = true;
+                }, 3000);
+            } else {
+                videoStatusElement.textContent = "Please record a video first.";
+            }
+        }
+    </script>
+
+</body>
+</html>

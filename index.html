@@ -8,9 +8,6 @@
     <title>Proton Jams Productions</title>
     <link rel="shortcut icon" href="header2.jpg" type="image/x-icon">
     <style>
-
-
-
         body {
             background-image: url('ck.jpg');
             background-size: cover;
@@ -261,6 +258,7 @@
             color: #c9302c;
         }
     </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -336,12 +334,12 @@
         <section id="course-categories">
             <h2>Explore Categories</h2>
             <div id="categories-buttons">
-                <button class="category-button" data-category="DJing">DJing</button>
-                <button class="category-button" data-category="Songwriting">Songwriting</button>
-                <button class="category-button" data-category="Production">Music Production</button>
-                <button class="category-button" data-category="Management">Event Management</button>
-                <button class="category-button" data-category="Equipment">Equipment Hire</button>
-                <button class="category-button" data-category="All">All Courses</button>
+                <button class="category-button" data-category="DJing" onclick="window.location.href='course-registration.html?category=DJing'">DJing</button>
+                <button class="category-button" data-category="Songwriting" onclick="window.location.href='course-registration.html?category=Songwriting'">Songwriting</button>
+                <button class="category-button" data-category="Production" onclick="window.location.href='course-registration.html?category=Production'">Music Production</button>
+                <button class="category-button" data-category="Management" onclick="window.location.href='course-registration.html?category=Management'">Event Management</button>
+                <button class="category-button" data-category="Equipment" onclick="window.location.href='course-registration.html?category=Equipment'">Equipment Hire</button>
+                <button class="category-button" data-category="All" onclick="filterCourses('All')">All Courses</button>
             </div>
         </section>
 
@@ -417,5 +415,5 @@
             { id: 1, category: "DJing", title: "Beginner DJ Course", description: "Learn the basics of DJing.", link: "course-details.html?id=1" },
             { id: 2, category: "Songwriting", title: "Introduction to Songwriting", description: "Write your first song.", link: "course-details.html?id=2" },
             { id: 3, category: "Production", title: "Music Production Fundamentals", description: "Master the basics of music production.", link: "course-details.html?id=3" },
-            { id: 4, category: "Management", title: "Event Management Essentials", description: "Plan and execute successful events.", link: "course-details.html?id=4" },
-            { id: 5, category: "Equipment", title: "Understanding Music Equipment", description: "Learn about different types of musical equipment.", link: "course-details.html
+            { id: 4, category: "Management", title: "Event Management Essentials", description: "Plan" },
+            
